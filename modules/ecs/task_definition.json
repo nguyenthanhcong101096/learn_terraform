@@ -1,0 +1,22 @@
+[
+  {
+    "name": "nginx",
+    "image": "congttl/docs:latest",
+    "cpu":   10,
+    "memory": 256,
+    "essential": true,
+    "environment": [
+      {"name": "RAILS_ENV", "value": "development"}
+    ],
+    "portMappings": [
+      {
+        "containerPort": 3000,
+        "hostPort": 80
+      },
+      {
+        "containerPort": 3000,
+        "hostPort": 443
+      }
+    ]
+  }
+]

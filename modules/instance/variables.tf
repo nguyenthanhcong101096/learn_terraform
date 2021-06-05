@@ -8,7 +8,7 @@ variable "instance_name" {
 }
 
 variable "instance_ami" {
-  default = "ami-055147723b7bca09a"
+  default = "ami-01eadf33e58113fa2"
 }
 
 variable "instance_vol_type" {
@@ -35,3 +35,10 @@ variable sg_public_id {
   type = any
 }
 
+variable "instance_profile" {
+  type = any
+}
+
+variable "cluster_name" {
+  type = any
+}

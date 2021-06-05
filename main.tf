@@ -6,21 +6,26 @@ module "vpc" {
   source = "./modules/vpc"
 }
 
+module "role" {
+  source = "./modules/role"
+}
+
+module "ecs" {
+  source = "./modules/ecs"
+}
+
 module "security_group" {
   source = "./modules/security_group"
   vpc_id = module.vpc.vpc_id
 }
 
 module "ec2_instances" {
-  source          = "./modules/instance"
-  key_name        = module.keypair.key_name
-  public_subnets  = module.vpc.public_subnets
-  sg_public_id    = module.security_group.sg_public_id
-}
-
-module "ssl_cert" {
-  source  = "./modules/ssl_cert"
-  aws_alb = module.load_balance.elb
+  source           = "./modules/instance"
+  key_name         = module.keypair.key_name
+  public_subnets   = module.vpc.public_subnets
+  sg_public_id     = module.security_group.sg_public_id
+  instance_profile = module.role.instance_profile
+  cluster_name     = module.ecs.cluster_name
 }
 
 module "load_balance" {
@@ -30,4 +35,9 @@ module "load_balance" {
   public_subnets  = module.vpc.public_subnets
   ec2_instances   = module.ec2_instances.instances
   certificate_arn = module.ssl_cert.certificate_arn
+}
+
+module "ssl_cert" {
+  source  = "./modules/ssl_cert"
+  aws_alb = module.load_balance.elb
 }
