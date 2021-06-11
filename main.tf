@@ -19,6 +19,12 @@ module "security_group" {
   vpc_id = module.vpc.vpc_id
 }
 
+module "rds" {
+  source             = "./modules/rds"
+  rds_security_group = module.security_group.sg_private_id
+  private_subnets    = module.vpc.private_subnets.*.id
+}
+
 module "ec2_instances" {
   source           = "./modules/instance"
   key_name         = module.keypair.key_name
